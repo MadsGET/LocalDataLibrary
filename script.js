@@ -1,4 +1,43 @@
-﻿    // The loaded file as an object.
+﻿let userdata =
+{
+    variables:
+    {
+        loadedFile: null,
+    },
+    
+    methods:
+    {
+        LoadFile: function(sender)
+        {
+            var file = sender.files[0];
+            var reader = new FileReader();
+            reader.readAsText(file)
+            reader.onload = function (e) {
+                // The file's text will be printed here
+                loadedFile = JSON.parse(e.target.result);
+            };
+        },
+        
+        SaveFile: function(filename, object)
+        {
+            if(confirm(`Are you sure you want to download ${filename}.txt?`))
+            {
+                let objectString = ObjectToString(object);
+                var element = document.createElement('a');
+                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(objectString));
+                element.setAttribute('download', filename);
+                element.style.display = 'none';
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
+            }
+        },
+    },
+
+}    
+
+
+    // The loaded file as an object.
     let loadedFile = null;
 
     function ObjectToString(object)
